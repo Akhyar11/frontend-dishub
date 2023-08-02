@@ -1,11 +1,10 @@
-import React from 'react';
-import Navbar from './components/Navbar';
-import Dashboard from './layouts/Dashboard';
+import React from "react";
+import Navbar from "./components/Navbar";
+import Dashboard from "./layouts/Dashboard";
 
 function App() {
-
   return (
-    <div className='min-h-screen bg-gray-100'>
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
       <Dashboard />
     </div>
