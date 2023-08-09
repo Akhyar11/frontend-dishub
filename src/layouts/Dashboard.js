@@ -5,12 +5,13 @@ import Rambu from "../assets/18678-NRTTQT.jpg";
 import List from "../components/List";
 import Report from "../components/Report";
 import { useSelector } from "react-redux";
+import Footer from "../components/Footer";
 
 const Dashboard = () => {
   const ruasJalan = useSelector((state) => state.ruasJalan);
   const rambu = useSelector((state) => state.rambu);
   return (
-    <div className="p-8 pt-28 md:mx-36">
+    <div>
       <div className="w-full md:flex">
         <Card
           title={"TOTAL RUAS JALAN"}

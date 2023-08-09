@@ -76,7 +76,7 @@ const List = () => {
     getData();
   }, []);
   return (
-    <div className="p-10 bg-white rounded-t-md border-t border-x border-gray-300">
+    <div className="p-10 bg-white rounded-md border border-gray-300 mb-10">
       <div className="mb-6">
         <input
           type="text"
@@ -86,11 +86,11 @@ const List = () => {
         />
       </div>
       <table className="w-full">
-        <tr className="font-semibold">
-          <th className="">No Ruas</th>
-          <th className="text-left">Nama Ruas jalan</th>
-          <th className="">Total Rambu</th>
-          <th className="">
+        <tr className="font-semibold border-b">
+          <th className="pb-2">No Ruas</th>
+          <th className="text-left pb-2">Nama Ruas jalan</th>
+          <th className="pb-2">Total Rambu</th>
+          <th className="pb-2">
             Aksi
             <div className="mb-2"></div>
           </th>
@@ -105,6 +105,7 @@ const List = () => {
             return (
               <FieldList
                 key={count}
+                idJalan={i.id_jalan}
                 nomer={count + 1}
                 ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
                 totalRambu={tr.length}
@@ -115,6 +116,7 @@ const List = () => {
               <FieldList
                 key={count}
                 nomer={count + 1}
+                idJalan={i.id_jalan}
                 ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
                 totalRambu={tr.length}
                 dark={true}
@@ -123,7 +125,8 @@ const List = () => {
           }
         })}
       </table>
-      <div className="flex justify-end mt-4">
+      <div className="flex items-center mt-4">
+        <p className="mr-auto">{stateRuasJalan.length} entries</p>
         <button
           href="#"
           className="px-2 py-1 mr-2 border rounded-md hover:border-black transition-all"
