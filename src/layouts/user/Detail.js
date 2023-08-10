@@ -1,10 +1,10 @@
 import React from "react";
-import FieldDescripsi from "../components/fieldDescripsi";
+import FieldDescripsi from "../../components/fieldDescripsi";
 import { MdOutlineBookmark } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import FieldRambu from "../components/fieldRambu";
+import FieldRambu from "../../components/fieldRambu";
 
 const Detail = () => {
   const [stateRuasJalan, setRuasJalan] = useState([]);

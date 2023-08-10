@@ -1,11 +1,10 @@
 import React from "react";
-import Card from "../components/Card";
-import Ruasjalan from "../assets/ruasjalan.jpg";
-import Rambu from "../assets/18678-NRTTQT.jpg";
-import List from "../components/List";
-import Report from "../components/Report";
+import Card from "../../components/Card";
+import Ruasjalan from "../../assets/18678-ruasjalan.png";
+import Rambu from "../../assets/18678-NRTTQT.jpg";
+import List from "../../components/List";
+import Report from "../../components/Report";
 import { useSelector } from "react-redux";
-import Footer from "../components/Footer";
 
 const Dashboard = () => {
   const ruasJalan = useSelector((state) => state.ruasJalan);
