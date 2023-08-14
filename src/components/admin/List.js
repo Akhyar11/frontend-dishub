@@ -2,15 +2,21 @@ import React from "react";
 import FieldList from "./fieldList";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateRuasJalan } from "../utils/ruasJalanSlice";
-import { updateRambu } from "../utils/rambuSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { updateRuasJalan } from "../../utils/ruasJalanSlice";
+import { updateRambu } from "../../utils/rambuSlice";
+import { useNavigate } from "react-router-dom";
 
 const List = () => {
   const [stateRuasJalan, setRuasJalan] = useState([]);
   const [stateRambu, setRambu] = useState([]);
   const [listItems, setListItems] = useState(1);
   const [listNumber, setListNumber] = useState(1);
+  const [popUp, setPopUp] = useState(false);
+  const [delateRuasJalan, setDRusaJalan] = useState("");
+  const [idJalan, setIdJalan] = useState("");
+  const admin = useSelector((state) => state.username);
+  const navigate = useNavigate();
   const api = "http://localhost:5000/api/v1/todo";
   let recordList = 10;
   let lastIndex = listItems * recordList;
@@ -39,7 +45,9 @@ const List = () => {
       setRambu(rambu);
       dispatch(updateRuasJalan({ total: ruasJalan.length }));
       dispatch(updateRambu({ total: rambu.length }));
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const prevList = () => {
@@ -72,19 +80,86 @@ const List = () => {
     }
   };
 
+  const handelDelate = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/auth/token",
+        {
+          username: admin,
+        }
+      );
+      const token = response.data.accsessToken;
+      await axios.delete("http://localhost:5000/api/v1/todo/jalan/" + idJalan, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const delateJalan = (idJalan, ruasJalan) => {
+    setPopUp(true);
+    setDRusaJalan(ruasJalan);
+    setIdJalan(idJalan);
+  };
+
+  const hadelAdd = () => {
+    navigate("/dashboard/admin/add/jalan");
+  };
+
   useEffect(() => {
     getData();
   }, []);
   return (
     <div className="p-10 bg-white rounded-md border border-gray-300 mb-10">
-      <div className="mb-6">
+      <div className="mb-6 w-full flex">
         <input
           type="text"
           placeholder="Search"
-          className="border transition-all ml-auto hover:border-black rounded-md pl-2 p-1 placeholder:italic placeholder:font-semibold font-semibold"
+          className="border transition-all hover:border-black rounded-md pl-2 p-1 placeholder:italic placeholder:font-semibold font-semibold"
           onChange={handelSearch}
         />
+        <button
+          className="bg-green-400 px-3 rounded-md ml-auto font-semibold text-white hover:bg-green-600 transition-all"
+          onClick={hadelAdd}
+        >
+          Tambah
+        </button>
       </div>
+      {popUp ? (
+        <div className="absolute flex justify-center items-center w-full border h-full top-0 right-0 bg-black bg-opacity-50">
+          <div className="bg-white rounded-md">
+            <div className="p-10 text-center">
+              <span>
+                Yakin ingin menghapus jalan{" "}
+                <span className="font-bold">{delateRuasJalan}</span>
+              </span>
+              <br />
+              <span>anda akan menghapus permanent ini</span>
+            </div>
+            <div className="w-full border-t border-black p-4 text-white font-semibold flex justify-end">
+              <button
+                onClick={() => setPopUp(false)}
+                className="bg-sky-400 hover:bg-sky-600 px-3 py-2 mr-4 rounded-md transition-all"
+              >
+                BATAL
+              </button>
+              <button
+                onClick={handelDelate}
+                className="bg-red-400 hover:bg-red-600 px-3 py-2 rounded-md transition-all"
+              >
+                HAPUS
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+
       <table className="w-full">
         <tr className="font-semibold border-b">
           <th className="pb-2">No Ruas</th>
@@ -109,6 +184,7 @@ const List = () => {
                 nomer={count + 1}
                 ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
                 totalRambu={tr.length}
+                deleteJalan={delateJalan}
               />
             );
           } else {
@@ -120,6 +196,7 @@ const List = () => {
                 ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
                 totalRambu={tr.length}
                 dark={true}
+                deleteJalan={delateJalan}
               />
             );
           }

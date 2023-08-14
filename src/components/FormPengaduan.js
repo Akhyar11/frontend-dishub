@@ -1,6 +1,6 @@
 import React from "react";
 
-const FormPengaduan = ({ label, placeholder, idFor }) => {
+const FormPengaduan = ({ label, placeholder, idFor, change }) => {
   return (
     <div className="lg:flex mb-4">
       <label
@@ -15,6 +15,7 @@ const FormPengaduan = ({ label, placeholder, idFor }) => {
         id={idFor}
         placeholder={placeholder}
         required
+        onChange={(e) => change(e)}
         className="border rounded-md w-full p-1 px-5"
       />
     </div>

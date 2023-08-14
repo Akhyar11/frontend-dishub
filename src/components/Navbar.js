@@ -1,9 +1,13 @@
 import React from "react";
-import { MdAccountCircle } from "react-icons/md";
 import logoDishub from "../assets/Departemen_Perhubungan.png";
 import logoBoyolali from "../assets/Kabupaten_Boyolali.png";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const login = () => {
+    navigate("/login");
+  };
   return (
     <div className="w-full bg-white fixed z-10">
       <div className="p-3 md:px-44 transition-all shadow-md">
@@ -21,7 +25,10 @@ const Navbar = () => {
             <span>Kabupaten Boyolali</span>
           </div>
           {/* <MdAccountCircle className="text-5xl hover:text-sky-400 transition-all" /> */}
-          <button className="border-2 hover:border-black transition-all rounded-md ml-auto py-2 px-3">
+          <button
+            className="border-2 hover:border-black transition-all rounded-md ml-auto py-2 px-3"
+            onClick={login}
+          >
             Login
           </button>
         </div>

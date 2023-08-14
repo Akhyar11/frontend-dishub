@@ -42,11 +42,11 @@ function Footer() {
         <h1 className="text-2xl mb-3">Hubungi Kami</h1>
         <div className="bg-gray-50 w-full h-[1px]"></div>
         <div className="md:w-44">
-          <p className="flex items-center">
+          <p className="flex items-center justify-center md:justify-start">
             <MdMailOutline className="mr-2" />
             dishub@boyolali.go.id
           </p>
-          <p className="flex items-center">
+          <p className="flex items-center justify-center md:justify-start">
             <MdPhoneEnabled className="mr-2" />
             (0276) 321086
           </p>
