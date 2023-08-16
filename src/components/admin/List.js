@@ -2,10 +2,11 @@ import React from "react";
 import FieldList from "./fieldList";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateRuasJalan } from "../../utils/ruasJalanSlice";
 import { updateRambu } from "../../utils/rambuSlice";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const List = () => {
   const [stateRuasJalan, setRuasJalan] = useState([]);
@@ -15,7 +16,7 @@ const List = () => {
   const [popUp, setPopUp] = useState(false);
   const [delateRuasJalan, setDRusaJalan] = useState("");
   const [idJalan, setIdJalan] = useState("");
-  const admin = useSelector((state) => state.username);
+  const token = Cookies.get("token");
   const navigate = useNavigate();
   const api = "http://localhost:5000/api/v1/todo";
   let recordList = 10;
@@ -85,18 +86,19 @@ const List = () => {
       const response = await axios.post(
         "http://localhost:5000/api/v1/auth/token",
         {
-          username: admin,
+          token,
         }
       );
-      const token = response.data.accsessToken;
+      const accsessToken = response.data.accsessToken;
       await axios.delete("http://localhost:5000/api/v1/todo/jalan/" + idJalan, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accsessToken}`,
         },
       });
       window.location.reload();
     } catch (err) {
       console.log(err);
+      navigate("/login");
     }
   };
 
@@ -138,7 +140,7 @@ const List = () => {
                 <span className="font-bold">{delateRuasJalan}</span>
               </span>
               <br />
-              <span>anda akan menghapus permanent ini</span>
+              <span>anda akan menghapus permanent jalan dan rambu</span>
             </div>
             <div className="w-full border-t border-black p-4 text-white font-semibold flex justify-end">
               <button
@@ -161,46 +163,50 @@ const List = () => {
       )}
 
       <table className="w-full">
-        <tr className="font-semibold border-b">
-          <th className="pb-2">No Ruas</th>
-          <th className="text-left pb-2">Nama Ruas jalan</th>
-          <th className="pb-2">Total Rambu</th>
-          <th className="pb-2">
-            Aksi
-            <div className="mb-2"></div>
-          </th>
-        </tr>
-        {recordRuasJalan.map((i, count) => {
-          const tr = recordRambu.filter((j) => {
-            if (j.jalan === `${i.titik_pangkal}-${i.titik_ujung}`) {
-              return i;
+        <thead>
+          <tr className="font-semibold border-b">
+            <th className="pb-2">No Ruas</th>
+            <th className="text-left pb-2">Nama Ruas jalan</th>
+            <th className="pb-2">Total Rambu</th>
+            <th className="pb-2">
+              Aksi
+              <div className="mb-2"></div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {recordRuasJalan.map((i, count) => {
+            const tr = recordRambu.filter((j) => {
+              if (j.id_jalan === i.id_jalan) {
+                return i;
+              }
+            });
+            if (count % 2 === 0) {
+              return (
+                <FieldList
+                  key={count}
+                  idJalan={i.id_jalan}
+                  nomer={count + 1}
+                  ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
+                  totalRambu={tr.length}
+                  deleteJalan={delateJalan}
+                />
+              );
+            } else {
+              return (
+                <FieldList
+                  key={count}
+                  nomer={count + 1}
+                  idJalan={i.id_jalan}
+                  ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
+                  totalRambu={tr.length}
+                  dark={true}
+                  deleteJalan={delateJalan}
+                />
+              );
             }
-          });
-          if (count % 2 === 0) {
-            return (
-              <FieldList
-                key={count}
-                idJalan={i.id_jalan}
-                nomer={count + 1}
-                ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
-                totalRambu={tr.length}
-                deleteJalan={delateJalan}
-              />
-            );
-          } else {
-            return (
-              <FieldList
-                key={count}
-                nomer={count + 1}
-                idJalan={i.id_jalan}
-                ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
-                totalRambu={tr.length}
-                dark={true}
-                deleteJalan={delateJalan}
-              />
-            );
-          }
-        })}
+          })}
+        </tbody>
       </table>
       <div className="flex items-center mt-4">
         <p className="mr-auto">{stateRuasJalan.length} entries</p>

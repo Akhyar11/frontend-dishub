@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateAdmin } from "../../utils/adminSlice";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [username, setUser] = useState("");
@@ -14,12 +15,17 @@ const Login = () => {
   const hadelLogin = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/v1/auth/login/admin", {
-        username,
-        pass,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/auth/login/admin",
+        {
+          username,
+          pass,
+        }
+      );
       dispatch(updateAdmin({ username, statusLogin: true }));
-      // console.log({ login: response });
+      Cookies.set("token", response.data.refreshToken, {
+        expires: 1,
+      });
       navigation("/dashboard/admin");
     } catch (err) {
       console.log({ login: err });

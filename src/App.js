@@ -6,6 +6,8 @@ import { useLogin } from "./utils/ceklogin";
 
 function App() {
   const statusLogin = useSelector((state) => state.admin.statusLogin);
+  const url = window.location.href;
+  
   useLogin();
   return <>{!statusLogin ? <User /> : <Admin />}</>;
 }

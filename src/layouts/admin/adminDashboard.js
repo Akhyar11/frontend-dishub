@@ -1,22 +1,14 @@
 import NavbarAdmin from "./NavbarAdmin";
 import React from "react";
-import { useEffect } from "react";
 import Card from "../../components/Card";
 import Ruasjalan from "../../assets/18678-ruasjalan.png";
 import Rambu from "../../assets/18678-NRTTQT.jpg";
 import List from "../../components/admin/List";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 const DashboardAdmin = () => {
   const ruasJalan = useSelector((state) => state.ruasJalan);
   const rambu = useSelector((state) => state.rambu);
-  const statusLogin = useSelector((state) => state.admin.statusLogin);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!statusLogin) navigate("/login");
-  }, []);
   return (
     <>
       <NavbarAdmin />

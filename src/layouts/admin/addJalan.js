@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FormPengaduan from "../../components/FormPengaduan";
 import NavbarAdmin from "./NavbarAdmin";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 const AddJalan = () => {
@@ -10,23 +10,22 @@ const AddJalan = () => {
   const [tp, setTp] = useState("");
   const [tu, setTu] = useState("");
   const [MSG, setMsg] = useState(false);
-  const admin = useSelector((state) => state.username);
-  const statusLogin = useSelector((i) => i.statusLogin);
   const navigate = useNavigate();
+  const token = Cookies.get("token");
 
   const addJalan = async () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/auth/token",
         {
-          username: admin,
+          token,
         }
       );
-      const token = response.data.accsessToken;
+      const accsessToken = response.data.accsessToken;
       await axios.post(
         "http://localhost:5000/api/v1/todo/jalan",
         { kecamatan, titik_pangkal: tp, titik_ujung: tu },
-        { headers: { Authorization: "Bearer " + token } }
+        { headers: { Authorization: "Bearer " + accsessToken } }
       );
       navigate("/dashboard/admin");
     } catch (err) {
@@ -38,10 +37,6 @@ const AddJalan = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (!statusLogin) navigate("/login");
-  }, []);
   return (
     <>
       <NavbarAdmin />
@@ -92,11 +87,10 @@ const AddJalan = () => {
                 className="mt-2 mb-6 -ml-5"
               />
             </div>
-            <div className="flex">
-              <div className="w-36 mr-5"></div>
+            <div className="lg:flex">
               <button
                 onClick={addJalan}
-                className="bg-green-600 hover:bg-green-700 mr-4 transition-all py-1 px-3 border border-gray-400 font-semibold text-gray-50"
+                className="bg-green-600 hover:bg-green-700 lg:mr-4 transition-all py-1 px-3 border border-gray-400 font-semibold text-gray-50"
               >
                 Tambah
               </button>

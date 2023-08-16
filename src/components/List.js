@@ -86,44 +86,48 @@ const List = () => {
         />
       </div>
       <table className="w-full">
-        <tr className="font-semibold border-b">
-          <th className="pb-2">No Ruas</th>
-          <th className="text-left pb-2">Nama Ruas jalan</th>
-          <th className="pb-2">Total Rambu</th>
-          <th className="pb-2">
-            Aksi
-            <div className="mb-2"></div>
-          </th>
-        </tr>
-        {recordRuasJalan.map((i, count) => {
-          const tr = recordRambu.filter((j) => {
-            if (j.jalan === `${i.titik_pangkal}-${i.titik_ujung}`) {
-              return i;
+        <thead>
+          <tr className="font-semibold border-b">
+            <th className="pb-2">No Ruas</th>
+            <th className="text-left pb-2">Nama Ruas jalan</th>
+            <th className="pb-2">Total Rambu</th>
+            <th className="pb-2">
+              Aksi
+              <div className="mb-2"></div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {recordRuasJalan.map((i, count) => {
+            const tr = recordRambu.filter((j) => {
+              if (j.jalan === `${i.titik_pangkal}-${i.titik_ujung}`) {
+                return i;
+              }
+            });
+            if (count % 2 === 0) {
+              return (
+                <FieldList
+                  key={count}
+                  idJalan={i.id_jalan}
+                  nomer={count + 1}
+                  ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
+                  totalRambu={tr.length}
+                />
+              );
+            } else {
+              return (
+                <FieldList
+                  key={count}
+                  nomer={count + 1}
+                  idJalan={i.id_jalan}
+                  ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
+                  totalRambu={tr.length}
+                  dark={true}
+                />
+              );
             }
-          });
-          if (count % 2 === 0) {
-            return (
-              <FieldList
-                key={count}
-                idJalan={i.id_jalan}
-                nomer={count + 1}
-                ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
-                totalRambu={tr.length}
-              />
-            );
-          } else {
-            return (
-              <FieldList
-                key={count}
-                nomer={count + 1}
-                idJalan={i.id_jalan}
-                ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
-                totalRambu={tr.length}
-                dark={true}
-              />
-            );
-          }
-        })}
+          })}
+        </tbody>
       </table>
       <div className="flex items-center mt-4">
         <p className="mr-auto">{stateRuasJalan.length} entries</p>
