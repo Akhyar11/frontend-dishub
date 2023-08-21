@@ -8,6 +8,8 @@ import { useNavigate, useParams } from "react-router-dom";
 const AddRambu = () => {
   const [jenisRambu, setJenisRambu] = useState("");
   const [posisi, setPosisi] = useState("");
+  const [koordinat, setKoordinat] = useState("");
+  const [image, setImage] = useState(undefined);
   const params = useParams();
   const [MSG, setMsg] = useState(false);
   const navigate = useNavigate();
@@ -16,6 +18,8 @@ const AddRambu = () => {
   const addRambu = async () => {
     const id_jalan = params.id;
     try {
+      const formData = new FormData();
+      formData.append("jalan", image);
       const response = await axios.post(
         "http://localhost:5000/api/v1/auth/token",
         {
@@ -25,9 +29,27 @@ const AddRambu = () => {
       const accsessToken = response.data.accsessToken;
       await axios.post(
         "http://localhost:5000/api/v1/todo/",
-        { id_jalan, jenis_rambu: jenisRambu, posisi },
+        { id_jalan, jenis_rambu: jenisRambu, posisi, koordinat },
         { headers: { Authorization: "Bearer " + accsessToken } }
       );
+
+      const res = await axios.get(
+        "http://localhost:5000/api/v1/todo/rambu/" +
+          jenisRambu +
+          posisi +
+          koordinat
+      );
+      const id_rambu = res.data.rambu[0].id_rambu;
+      await axios.post(
+        "http://localhost:5000/api/v1/todo/rambu/gambar/" + id_rambu,
+        formData
+      );
+
+      await axios.post(
+        "http://localhost:5000/api/v1/todo/rambu/gambar/" + id_rambu,
+        formData
+      );
+
       navigate("/dashboard/admin/detail/" + id_jalan);
     } catch (err) {
       const msg = err.response.data.msg;
@@ -96,6 +118,51 @@ const AddRambu = () => {
                 <option value="Kiri">Kiri</option>
                 <option value="Tengah">Tengah</option>
               </datalist>
+            </div>
+            <FormPengaduan
+              label="Koordinat"
+              placeholder="tulis detail koordinat"
+              change={(e) => setKoordinat(e.target.value)}
+              idFor={"Koordinat"}
+            />
+            <div className="lg:flex mb-4">
+              <label
+                htmlFor="status"
+                className="font-semibold text-sm w-36 flex items-center mr-10 mb-2"
+              >
+                Status <span className="text-pink-600 ml-1">*</span>
+              </label>
+              <input
+                list="status"
+                placeholder="pilih status"
+                value={"direncanakan"}
+                disabled
+                className="border rounded-md w-full p-1 px-5"
+                onChange={(e) => setPosisi(e.target.value)}
+              />
+              <datalist id="status">
+                <option value="direncanakan">direncanakan</option>
+                <option value="terpasang">terpasang</option>
+                <option value="dipelihara">dipelihara</option>
+              </datalist>
+            </div>
+            <div className="lg:flex mb-4">
+              <label
+                htmlFor="upload"
+                className="font-semibold text-sm w-36 mr-10 mb-2"
+              >
+                Upload Foto Pendukung
+                <span className="text-pink-600 ml-1">*</span>
+              </label>
+              <input
+                type="file"
+                id="upload"
+                placeholder="tulis isi pengaduan"
+                className="mt-2 mb-6 -ml-5"
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                }}
+              />
             </div>
             <div className="lg:flex">
               <button

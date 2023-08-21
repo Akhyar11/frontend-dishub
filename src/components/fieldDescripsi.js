@@ -6,11 +6,11 @@ function FieldDescripsi({ field, nama, dark, cl = "" }) {
       <div
         className={
           dark
-            ? `bg-gray-100 flex md:pr-12 pl-3 py-2 items-center border-x border-t font-semibold border-gray-200 ${cl}`
-            : `flex md:pr-12 pl-3 py-2 items-center border-x border-t font-semibold border-gray-200 ${cl}`
+            ? `bg-gray-100 flex md:pr-12 pl-3 py-2 items-center border-x border-t font-semibold border-gray-200  ${cl}`
+            : `flex md:pr-12 pl-3 py-2 items-center border-x border-t font-semibold border-gray-200  ${cl}`
         }
       >
-        <p className="block w-32">{nama}</p>
+        <p className="block w-32 text-black">{nama}</p>
       </div>
       <div
         className={

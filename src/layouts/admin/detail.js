@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import NavbarAdmin from "./NavbarAdmin";
 import { useNavigate } from "react-router-dom";
+import Dropdown from "../../components/dropdown";
 
 const Detail = () => {
   const [stateRuasJalan, setRuasJalan] = useState([]);
@@ -13,19 +14,42 @@ const Detail = () => {
   const [jalan, setJalan] = useState("");
   const navigate = useNavigate();
   const params = useParams();
-  const api = "http://localhost:5000/api/v1/todo/jalan/rambu/" + params.id;
+  const api = "http://localhost:5000/api/v1/todo/";
+  const hadelAdd = () => {
+    navigate("/dashboard/admin/add/rambu/" + params.id);
+  };
+
+  const handelSearch = async (e) => {
+    if (e.target.value === "") {
+      const response = await axios.get(api);
+      const { rambu } = response.data.data;
+      setRambu(rambu);
+    } else {
+      const response = await axios.get(`${api}/rambu/${e.target.value}`);
+      const { rambu } = response.data;
+      console.log({ rambu });
+      setRambu(rambu);
+    }
+  };
+
+  const handelAddGambar = () => {
+    navigate("/dashboard/admin/add/jalan/gambar/" + params.id);
+  };
+
+  const menuItems = [
+    { item: "Edit Jalan", func: () => console.log("Edit Jalan") },
+    { item: "Tambah Rambu", func: hadelAdd },
+    { item: "Tambah Gambar", func: handelAddGambar },
+  ];
+
   const getData = async () => {
     try {
-      const response = await axios.get(api);
+      const response = await axios.get(api + params.id);
       const { ruasJalan, rambu } = response.data.data;
       setRuasJalan(ruasJalan);
       setJalan(ruasJalan[0].titik_pangkal + "-" + ruasJalan[0].titik_ujung);
       setRambu(rambu);
     } catch (err) {}
-  };
-
-  const hadelAdd = () => {
-    navigate("/dashboard/admin/add/rambu/" + params.id);
   };
 
   useEffect(() => {
@@ -39,10 +63,8 @@ const Detail = () => {
           <div className="p-4 flex border-b items-center">
             <MdOutlineBookmark className="mr-2" />
             <h1>Deskripsi Jalan</h1>
-            <div className="font-semibold ml-auto text-white">
-              <button className="bg-sky-400 hover:bg-sky-600 px-3 py-2 rounded-md transition-all">
-                Edit Ruas Jalan
-              </button>
+            <div className="font-semibold ml-auto flex items-center mr-4 text-white">
+              <Dropdown menuItems={menuItems} />
             </div>
           </div>
           <div className="p-10">
@@ -74,23 +96,17 @@ const Detail = () => {
                 type="text"
                 placeholder="Search"
                 className="border transition-all hover:border-black rounded-md pl-2 p-1 placeholder:italic placeholder:font-semibold font-semibold"
-                // onChange={handelSearch}
+                onChange={handelSearch}
               />
-              <button
-                className="bg-green-400 px-3 rounded-md ml-auto font-semibold text-white hover:bg-green-600 transition-all"
-                onClick={hadelAdd}
-              >
-                Tambah
-              </button>
             </div>
             <table className="w-full">
               <thead>
                 <tr className="font-semibold border-b">
                   <th className="pb-2">No Rambu</th>
                   <th className="text-left pb-2">Jenis Rambu</th>
-                  <th className="text-left pb-2">Jalan</th>
-                  <th className="pb-2">Gambar</th>
+                  <th className="text-left pb-2">Koordinat</th>
                   <th className="pb-2">Posisi</th>
+                  <th className="pb-2">Status</th>
                   <th className="pb-2">
                     Aksi
                     <div className="mb-2"></div>
@@ -105,10 +121,14 @@ const Detail = () => {
                         key={count + 1}
                         nomer={count}
                         dark={true}
-                        jalan={jalan}
                         jenisRambu={i.jenis_rambu}
-                        gambar={""}
+                        jalan={i.koordinat}
                         posisi={i.posisi}
+                        nav={() => {
+                          navigate(
+                            "/dashboard/admin/detail/rambu/" + i.id_rambu
+                          );
+                        }}
                       />
                     );
                   } else {
@@ -116,9 +136,13 @@ const Detail = () => {
                       <FieldRambu
                         key={count + 1}
                         nomer={count}
-                        jalan={jalan}
+                        nav={() => {
+                          navigate(
+                            "/dashboard/admin/detail/rambu/" + i.id_rambu
+                          );
+                        }}
                         jenisRambu={i.jenis_rambu}
-                        gambar={""}
+                        jalan={i.koordinat}
                         posisi={i.posisi}
                       />
                     );

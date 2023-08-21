@@ -95,7 +95,7 @@ const AddJalan = () => {
                 Tambah
               </button>
               <button
-                onClick={addJalan}
+                onClick={() => navigate("/dashboard/admin")}
                 className="bg-white hover:bg-gray-100 transition-all py-1 px-3 border border-gray-400 font-semibold"
               >
                 Batal

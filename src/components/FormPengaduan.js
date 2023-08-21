@@ -1,6 +1,12 @@
 import React from "react";
 
-const FormPengaduan = ({ label, placeholder, idFor, change }) => {
+const FormPengaduan = ({
+  label,
+  placeholder,
+  idFor,
+  change,
+  disabel = false,
+}) => {
   return (
     <div className="lg:flex mb-4">
       <label
@@ -16,6 +22,7 @@ const FormPengaduan = ({ label, placeholder, idFor, change }) => {
         placeholder={placeholder}
         required
         onChange={(e) => change(e)}
+        disabled={disabel}
         className="border rounded-md w-full p-1 px-5"
       />
     </div>

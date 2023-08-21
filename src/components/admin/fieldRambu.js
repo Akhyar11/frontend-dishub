@@ -2,7 +2,7 @@ import React from "react";
 import belok from "../assets/18678-ruasjalan.png";
 import { MdVisibility } from "react-icons/md";
 
-const FieldRambu = ({ dark, nomer, jenisRambu, gambar, posisi, jalan }) => {
+const FieldRambu = ({ dark, nomer, jenisRambu, posisi, jalan }) => {
   const isDark = `border-r px-2 border-white`;
   return (
     <tr className={dark ? "border-b bg-gray-100" : "border-b"}>
