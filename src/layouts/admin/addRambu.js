@@ -2,34 +2,29 @@ import React, { useState } from "react";
 import FormPengaduan from "../../components/FormPengaduan";
 import NavbarAdmin from "./NavbarAdmin";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useNavigate, useParams } from "react-router-dom";
+import getToken from "../../utils/getToken";
 
 const AddRambu = () => {
   const [jenisRambu, setJenisRambu] = useState("");
   const [posisi, setPosisi] = useState("");
   const [koordinat, setKoordinat] = useState("");
+  const [status, setStatus] = useState("direncanakan");
   const [image, setImage] = useState(undefined);
   const params = useParams();
   const [MSG, setMsg] = useState(false);
   const navigate = useNavigate();
-  const token = Cookies.get("token");
 
   const addRambu = async () => {
     const id_jalan = params.id;
     try {
       const formData = new FormData();
       formData.append("jalan", image);
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/auth/token",
-        {
-          token,
-        }
-      );
-      const accsessToken = response.data.accsessToken;
+      const response = await getToken();
+      const accsessToken = response;
       await axios.post(
         "http://localhost:5000/api/v1/todo/",
-        { id_jalan, jenis_rambu: jenisRambu, posisi, koordinat },
+        { id_jalan, jenis_rambu: jenisRambu, posisi, koordinat, status },
         { headers: { Authorization: "Bearer " + accsessToken } }
       );
 
@@ -40,11 +35,6 @@ const AddRambu = () => {
           koordinat
       );
       const id_rambu = res.data.rambu[0].id_rambu;
-      await axios.post(
-        "http://localhost:5000/api/v1/todo/rambu/gambar/" + id_rambu,
-        formData
-      );
-
       await axios.post(
         "http://localhost:5000/api/v1/todo/rambu/gambar/" + id_rambu,
         formData
@@ -138,7 +128,7 @@ const AddRambu = () => {
                 value={"direncanakan"}
                 disabled
                 className="border rounded-md w-full p-1 px-5"
-                onChange={(e) => setPosisi(e.target.value)}
+                onChange={(e) => setStatus(e.target.value)}
               />
               <datalist id="status">
                 <option value="direncanakan">direncanakan</option>

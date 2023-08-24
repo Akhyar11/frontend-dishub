@@ -1,12 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { MdOutlineBookmark } from "react-icons/md";
 import FieldDescripsi from "../../components/fieldDescripsi";
-import FieldRambu from "../../components/fieldRambu";
+import FieldRambu from "../../components/admin/fieldRambu";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import NavbarAdmin from "./NavbarAdmin";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../../components/dropdown";
+import getToken from "../../utils/getToken";
 
 const Detail = () => {
   const [stateRuasJalan, setRuasJalan] = useState([]);
@@ -25,21 +26,15 @@ const Detail = () => {
       const { rambu } = response.data.data;
       setRambu(rambu);
     } else {
-      const response = await axios.get(`${api}/rambu/${e.target.value}`);
+      const response = await axios.get(`${api}rambu/${e.target.value}`);
       const { rambu } = response.data;
-      console.log({ rambu });
       setRambu(rambu);
     }
-  };
-
-  const handelAddGambar = () => {
-    navigate("/dashboard/admin/add/jalan/gambar/" + params.id);
   };
 
   const menuItems = [
     { item: "Edit Jalan", func: () => console.log("Edit Jalan") },
     { item: "Tambah Rambu", func: hadelAdd },
-    { item: "Tambah Gambar", func: handelAddGambar },
   ];
 
   const getData = async () => {
@@ -50,6 +45,19 @@ const Detail = () => {
       setJalan(ruasJalan[0].titik_pangkal + "-" + ruasJalan[0].titik_ujung);
       setRambu(rambu);
     } catch (err) {}
+  };
+
+  const del = async (id) => {
+    try {
+      const response = await getToken();
+      const accsessToken = response;
+      await axios.delete(api + "rambu/" + id, {
+        headers: { Authorization: "Bearer " + accsessToken },
+      });
+      window.location.reload();
+    } catch (err) {
+      console.log({ err });
+    }
   };
 
   useEffect(() => {
@@ -122,13 +130,15 @@ const Detail = () => {
                         nomer={count}
                         dark={true}
                         jenisRambu={i.jenis_rambu}
-                        jalan={i.koordinat}
+                        koordinat={i.koordinat}
                         posisi={i.posisi}
+                        status={i.status}
                         nav={() => {
                           navigate(
                             "/dashboard/admin/detail/rambu/" + i.id_rambu
                           );
                         }}
+                        del={() => del(i.id_rambu)}
                       />
                     );
                   } else {
@@ -136,14 +146,16 @@ const Detail = () => {
                       <FieldRambu
                         key={count + 1}
                         nomer={count}
+                        jenisRambu={i.jenis_rambu}
+                        koordinat={i.koordinat}
+                        posisi={i.posisi}
+                        status={i.status}
                         nav={() => {
                           navigate(
                             "/dashboard/admin/detail/rambu/" + i.id_rambu
                           );
                         }}
-                        jenisRambu={i.jenis_rambu}
-                        jalan={i.koordinat}
-                        posisi={i.posisi}
+                        del={() => del(i.id_rambu)}
                       />
                     );
                   }

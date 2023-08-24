@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import FormPengaduan from "../../components/FormPengaduan";
 import NavbarAdmin from "./NavbarAdmin";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import getToken from "../../utils/getToken";
 
 const AddJalan = () => {
   const [kecamatan, setKecamatan] = useState("");
@@ -11,17 +11,11 @@ const AddJalan = () => {
   const [tu, setTu] = useState("");
   const [MSG, setMsg] = useState(false);
   const navigate = useNavigate();
-  const token = Cookies.get("token");
 
   const addJalan = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/auth/token",
-        {
-          token,
-        }
-      );
-      const accsessToken = response.data.accsessToken;
+      const response = await getToken();
+      const accsessToken = response;
       await axios.post(
         "http://localhost:5000/api/v1/todo/jalan",
         { kecamatan, titik_pangkal: tp, titik_ujung: tu },

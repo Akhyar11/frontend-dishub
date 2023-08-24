@@ -19,7 +19,6 @@ const Gambar = ({ gambar }) => {
                   <div className="mb-2">Direncanakan</div>
                   <img
                     key={i.id_gambarRambu}
-                    className="rounded-sm border border-sky-400"
                     src={i.gambar}
                     alt={i.id_gambarRambu}
                   />

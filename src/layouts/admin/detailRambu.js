@@ -11,30 +11,22 @@ import Gambar from "../../components/admin/gambar";
 const DetailRambu = () => {
   const [rambu, setRambu] = useState([]);
   const [status, setStatus] = useState([]);
-  const [statusNow, setStatusNow] = useState([]);
+  const [ruasJalan, setRuasJalan] = useState([]);
   const navigate = useNavigate();
   const params = useParams();
   const api = "http://localhost:5000/api/v1/todo/";
 
   const menuItems = [
     { item: "Edit Rambu", func: () => console.log("Edit Jalan") },
+    { item: "Edit Status", func: () => console.log("Edit Jalan") },
   ];
 
   const getData = async () => {
     try {
       const response = await axios.get(api + "get/rambu/id/" + params.id);
-      const { status, rambu } = response.data.data;
-      let statusNow = [];
-      for (let i = 0; i < status.length; i++) {
-        const time = new Date(status[i].createdAt).getTime();
-        statusNow.push(time);
-      }
-      const max = Math.max.apply(null, statusNow);
-      for (let i = 0; i < status.length; i++) {
-        if (max === new Date(status[i].createdAt).getTime())
-          statusNow = [status[i]];
-      }
-      setStatusNow(statusNow);
+      const { status, rambu, ruasJalan } = response.data.data;
+
+      setRuasJalan(ruasJalan);
       setRambu(rambu);
       setStatus(status);
     } catch (err) {}
@@ -57,27 +49,36 @@ const DetailRambu = () => {
           </div>
           <div className="p-10">
             {rambu.map((i) => {
+              const j = ruasJalan.map((j) => {
+                return j;
+              });
               return (
                 <Fragment key={i.id_jalan}>
                   <FieldDescripsi field="001" nama="No" dark={true} />
-                  <FieldDescripsi field={i.jenis_rambu} nama="Jenis Rambu" />
+                  <FieldDescripsi field={j[0].kecamatan} nama="Kecamatan" />
                   <FieldDescripsi
-                    field={i.koordinat}
-                    nama="Koordianat"
+                    field={j[0].titik_pangkal}
+                    nama="Titik Pangkal"
                     dark={true}
                   />
-                  <FieldDescripsi field={i.posisi} nama="Posisi" />
+                  <FieldDescripsi field={j[0].titik_ujung} nama="Titik Ujung" />
                   <FieldDescripsi
-                    field={statusNow[0].status}
-                    nama="Status"
+                    field={i.jenis_rambu}
+                    nama="Jenis Rambu"
                     dark={true}
-                    cl={
-                      "border-b" + statusNow[0].status === "direncanakan"
+                  />
+                  <FieldDescripsi field={i.koordinat} nama="Koordianat" />
+                  <FieldDescripsi field={i.posisi} nama="Posisi" dark={true} />
+                  <FieldDescripsi
+                    field={i.status}
+                    nama="Status"
+                    cl={`border-b ${
+                      i.status === "direncanakan"
                         ? "text-yellow-400"
-                        : statusNow[0].status === "terpasang"
+                        : i.status === "terpasang"
                         ? "text-green-400"
                         : "text-red-400"
-                    }
+                    }`}
                   />
                 </Fragment>
               );
