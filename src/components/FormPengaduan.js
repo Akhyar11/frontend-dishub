@@ -6,6 +6,7 @@ const FormPengaduan = ({
   idFor,
   change,
   disabel = false,
+  value,
 }) => {
   return (
     <div className="lg:flex mb-4">
@@ -20,6 +21,7 @@ const FormPengaduan = ({
         type="text"
         id={idFor}
         placeholder={placeholder}
+        value={value}
         required
         onChange={(e) => change(e)}
         disabled={disabel}

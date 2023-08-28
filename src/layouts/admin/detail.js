@@ -33,7 +33,10 @@ const Detail = () => {
   };
 
   const menuItems = [
-    { item: "Edit Jalan", func: () => console.log("Edit Jalan") },
+    {
+      item: "Edit Jalan",
+      func: () => navigate("/dashboard/admin/update/jalan/" + params.id),
+    },
     { item: "Tambah Rambu", func: hadelAdd },
   ];
 

@@ -7,6 +7,7 @@ import Detail from "./detail";
 import AddRambu from "./addRambu";
 import AddGambar from "./addGambar";
 import DetailRambu from "./detailRambu";
+import UpdateJalan from "./editJalan";
 
 const Admin = () => {
   return (
@@ -15,6 +16,10 @@ const Admin = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard/admin" element={<DashboardAdmin />} />
         <Route path="/dashboard/admin/add/jalan" element={<AddJalan />} />
+        <Route
+          path="/dashboard/admin/update/jalan/:id"
+          element={<UpdateJalan />}
+        />
         <Route path="/dashboard/admin/add/rambu/:id" element={<AddRambu />} />
         <Route
           path="/dashboard/admin/add/jalan/gambar/:id"
