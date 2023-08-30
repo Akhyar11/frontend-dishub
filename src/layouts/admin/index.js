@@ -8,6 +8,8 @@ import AddRambu from "./addRambu";
 import AddGambar from "./addGambar";
 import DetailRambu from "./detailRambu";
 import UpdateJalan from "./editJalan";
+import UpdateRambu from "./editRambu";
+import UpdateStatus from "./editStatus";
 
 const Admin = () => {
   return (
@@ -24,6 +26,14 @@ const Admin = () => {
         <Route
           path="/dashboard/admin/add/jalan/gambar/:id"
           element={<AddGambar />}
+        />
+        <Route
+          path="/dashboard/admin/update/gambar/:id"
+          element={<UpdateRambu />}
+        />
+        <Route
+          path="/dashboard/admin/update/status/:id"
+          element={<UpdateStatus />}
         />
         <Route path="/dashboard/admin/detail/:id" element={<Detail />} />
         <Route

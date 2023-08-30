@@ -18,7 +18,7 @@ const UpdateRambu = () => {
   const getData = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/v1/todo/get/rambu/id/:id" + params.id
+        "http://localhost:5000/api/v1/todo/get/rambu/id/" + params.id
       );
 
       const { rambu } = response.data.data;
@@ -51,17 +51,22 @@ const UpdateRambu = () => {
           koordinat
       );
       const id_rambu = res.data.rambu[0].id_rambu;
-      await axios.post(
+      const resGambar = await axios.post(
         "http://localhost:5000/api/v1/todo/rambu/gambar/" + id_rambu,
         formData
       );
-      await axios.post("http://localhost:5000/api/v1/todo/rambu/gambar/", {
-        status,
-      });
+      await axios.post(
+        "http://localhost:5000/api/v1/todo/rambu/gambar/status/" +
+          resGambar.data.id_gambarRambu,
+        {
+          status,
+        }
+      );
 
-      navigate("/dashboard/admin/detail/" + id_jalan);
+      navigate("/dashboard/admin/detail/rambu/" + id_rambu);
     } catch (err) {
       const msg = err.response.data.msg;
+      console.log({ err });
       if (msg === "Harap login dulu") {
         navigate("/login");
       } else {
@@ -83,7 +88,7 @@ const UpdateRambu = () => {
       <div className="p-8 pt-28 lg:mx-72">
         <div className="bg-white rounded-md border border-gray-300 mb-10">
           <div className="p-4 flex border-b items-center">
-            <h1>Tambah Data Rambu</h1>
+            <h1>Edit Data Rambu</h1>
           </div>
           <div className={MSG ? "px-10 pb-10" : "p-10"}>
             {MSG ? (
@@ -152,7 +157,6 @@ const UpdateRambu = () => {
                 list="status"
                 placeholder="pilih status"
                 value={status}
-                disabled
                 className="border rounded-md w-full p-1 px-5"
                 onChange={(e) => setStatus(e.target.value)}
               />

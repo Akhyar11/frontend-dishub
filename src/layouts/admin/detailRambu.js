@@ -17,7 +17,10 @@ const DetailRambu = () => {
   const api = "http://localhost:5000/api/v1/todo/";
 
   const menuItems = [
-    { item: "Edit Rambu", func: () => console.log("Edit Jalan") },
+    {
+      item: "Edit Rambu",
+      func: () => navigate("/dashboard/admin/update/gambar/" + params.id),
+    },
     { item: "Edit Status", func: () => console.log("Edit Jalan") },
   ];
 
