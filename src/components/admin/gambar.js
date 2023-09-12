@@ -12,21 +12,24 @@ const Gambar = ({ gambar }) => {
         <h1>Gambar</h1>
       </div>
       <div className="p-10">
-        <div className="max-w-xs font-semibold">
+        <div className="mb-2 max-w-xs font-semibold">Direncanakan</div>
+        <div className="max-w-xs font-semibold flex">
           {gambar.map((i) => {
             if (i.status === "direncanakan") {
               return <IsiGambar i={i} />;
             }
           })}
         </div>
-        <div className="max-w-xs font-semibold">
+        <div className="mb-2 max-w-xs font-semibold">Terpasang</div>
+        <div className="max-w-xs font-semibold flex">
           {gambar.map((i) => {
             if (i.status === "terpasang") {
               return <IsiGambar i={i} />;
             }
           })}
         </div>
-        <div className="max-w-xs font-semibold">
+        <div className="mb-2 max-w-xs font-semibold">Dipelihara</div>
+        <div className="max-w-xs font-semibold flex">
           {gambar.map((i) => {
             if (i.status === "dipelihara") {
               return <IsiGambar i={i} />;
@@ -52,30 +55,31 @@ const IsiGambar = ({ i }) => {
   };
   return (
     <div key={i.id_gambarRambu}>
-      <div className="mb-2">{i.status}</div>
       {i.gambar === "" ? (
         <></>
       ) : (
-        <img key={i.id_gambarRambu} src={i.gambar} alt={i.id_gambarRambu} />
+        <div className="relative">
+          <img key={i.id_gambarRambu} src={i.gambar} alt={i.id_gambarRambu} />
+          <div className="w-full flex absolute bottom-0 opacity-0 transition-all hover:opacity-100">
+            <button
+              onClick={del}
+              className="bg-red-400 hover:bg-red-600 transition-all mx-auto mt-2  text-white font-semibold p-2 rounded-md"
+            >
+              <span>
+                <FaTrashAlt />
+              </span>
+            </button>
+            <button
+              onClick={edit}
+              className="bg-sky-400 hover:bg-sky-600 transition-all mx-auto mt-2 text-white font-semibold p-2 rounded-md"
+            >
+              <span>
+                <FaPencilAlt />
+              </span>
+            </button>
+          </div>
+        </div>
       )}
-      <div className="max-w-max mx-auto flex gap-2">
-        <button
-          onClick={del}
-          className="bg-red-400 hover:bg-red-600 transition-all mx-auto mt-2  text-white font-semibold p-2 rounded-md"
-        >
-          <span>
-            <FaTrashAlt />
-          </span>
-        </button>
-        <button
-          onClick={edit}
-          className="bg-sky-400 hover:bg-sky-600 transition-all mx-auto mt-2 text-white font-semibold p-2 rounded-md"
-        >
-          <span>
-            <FaPencilAlt />
-          </span>
-        </button>
-      </div>
     </div>
   );
 };

@@ -18,30 +18,41 @@ const AddRambu = () => {
   const addRambu = async () => {
     const id_jalan = params.id;
     try {
-      const formData = new FormData();
-      formData.append("jalan", image);
-      const response = await getToken();
-      const accsessToken = response;
-      await axios.post(
-        "http://localhost:5000/api/v1/todo/",
-        { id_jalan, jenis_rambu: jenisRambu, posisi, koordinat, status },
-        { headers: { Authorization: "Bearer " + accsessToken } }
-      );
+      if (
+        jenisRambu === "" ||
+        status === "" ||
+        posisi === "" ||
+        koordinat === "" ||
+        image === undefined
+      ) {
+        setMsg("Pastikan semua form terisi");
+      } else {
+        const formData = new FormData();
+        formData.append("jalan", image);
+        const response = await getToken();
+        const accsessToken = response;
+        await axios.post(
+          "http://localhost:5000/api/v1/todo/",
+          { id_jalan, jenis_rambu: jenisRambu, posisi, koordinat, status },
+          { headers: { Authorization: "Bearer " + accsessToken } }
+        );
 
-      const res = await axios.get(
-        "http://localhost:5000/api/v1/todo/rambu/" +
-          jenisRambu +
-          posisi +
-          koordinat
-      );
-      const id_rambu = res.data.rambu[0].id_rambu;
-      await axios.post(
-        "http://localhost:5000/api/v1/todo/rambu/gambar/" + id_rambu,
-        formData
-      );
+        const res = await axios.get(
+          "http://localhost:5000/api/v1/todo/rambu/" +
+            jenisRambu +
+            posisi +
+            koordinat
+        );
+        const id_rambu = res.data.rambu[0].id_rambu;
+        await axios.post(
+          "http://localhost:5000/api/v1/todo/rambu/gambar/" + id_rambu,
+          formData
+        );
 
-      navigate("/dashboard/admin/detail/" + id_jalan);
+        navigate("/dashboard/admin/detail/" + id_jalan);
+      }
     } catch (err) {
+      console.log(err.response.data.msg);
       const msg = err.response.data.msg;
       if (msg === "Harap login dulu") {
         navigate("/login");

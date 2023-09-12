@@ -7,6 +7,7 @@ import getToken from "../../utils/getToken";
 
 const AddJalan = () => {
   const [kecamatan, setKecamatan] = useState("");
+  const [jalan, setJalan] = useState("");
   const [tp, setTp] = useState("");
   const [tu, setTu] = useState("");
   const [MSG, setMsg] = useState(false);
@@ -14,14 +15,18 @@ const AddJalan = () => {
 
   const addJalan = async () => {
     try {
-      const response = await getToken();
-      const accsessToken = response;
-      await axios.post(
-        "http://localhost:5000/api/v1/todo/jalan",
-        { kecamatan, titik_pangkal: tp, titik_ujung: tu },
-        { headers: { Authorization: "Bearer " + accsessToken } }
-      );
-      navigate("/dashboard/admin");
+      if (kecamatan === "" || jalan === "" || tp === "" || tu === "") {
+        setMsg("Pastikan semua form terisi");
+      } else {
+        const response = await getToken();
+        const accsessToken = response;
+        await axios.post(
+          "http://localhost:5000/api/v1/todo/jalan",
+          { kecamatan, jalan, titik_pangkal: tp, titik_ujung: tu },
+          { headers: { Authorization: "Bearer " + accsessToken } }
+        );
+        navigate("/dashboard/admin");
+      }
     } catch (err) {
       const msg = err.response.data.msg;
       if (msg === "Harap login dulu") {
@@ -55,6 +60,12 @@ const AddJalan = () => {
               idFor={"Kecamatan"}
             />
             <FormPengaduan
+              label="Nama Jalan"
+              placeholder="tulis nama jalan"
+              change={(e) => setJalan(e.target.value)}
+              idFor={"Jalan"}
+            />
+            <FormPengaduan
               idFor={"titik_ujung"}
               change={(e) => setTp(e.target.value)}
               label="Titik Ujung"
@@ -66,21 +77,6 @@ const AddJalan = () => {
               label="Titik Pangkal"
               placeholder="tulis titik pangkal"
             />
-            <div className="lg:flex mb-4">
-              <label
-                htmlFor="upload"
-                className="font-semibold text-sm w-36 mr-10 mb-2"
-              >
-                Upload Foto Pendukung
-                <span className="text-pink-600 ml-1">*</span>
-              </label>
-              <input
-                type="file"
-                id="upload"
-                placeholder="tulis isi pengaduan"
-                className="mt-2 mb-6 -ml-5"
-              />
-            </div>
             <div className="lg:flex">
               <button
                 onClick={addJalan}

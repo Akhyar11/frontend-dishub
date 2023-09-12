@@ -34,36 +34,46 @@ const UpdateRambu = () => {
   const addRambu = async () => {
     const id_jalan = params.id;
     try {
-      const formData = new FormData();
-      formData.append("jalan", image);
-      const response = await getToken();
-      const accsessToken = response;
-      await axios.put(
-        "http://localhost:5000/api/v1/todo/update/rambu/" + params.id,
-        { jenis_rambu: jenisRambu, posisi, koordinat, status },
-        { headers: { Authorization: "Bearer " + accsessToken } }
-      );
+      if (
+        jenisRambu === "" ||
+        status === "" ||
+        posisi === "" ||
+        koordinat === "" ||
+        image === undefined
+      ) {
+        setMsg("Pastikan semua form terisi");
+      } else {
+        const formData = new FormData();
+        formData.append("jalan", image);
+        const response = await getToken();
+        const accsessToken = response;
+        await axios.put(
+          "http://localhost:5000/api/v1/todo/update/rambu/" + params.id,
+          { jenis_rambu: jenisRambu, posisi, koordinat, status },
+          { headers: { Authorization: "Bearer " + accsessToken } }
+        );
 
-      const res = await axios.get(
-        "http://localhost:5000/api/v1/todo/rambu/" +
-          jenisRambu +
-          posisi +
-          koordinat
-      );
-      const id_rambu = res.data.rambu[0].id_rambu;
-      const resGambar = await axios.post(
-        "http://localhost:5000/api/v1/todo/rambu/gambar/" + id_rambu,
-        formData
-      );
-      await axios.post(
-        "http://localhost:5000/api/v1/todo/rambu/gambar/status/" +
-          resGambar.data.id_gambarRambu,
-        {
-          status,
-        }
-      );
+        const res = await axios.get(
+          "http://localhost:5000/api/v1/todo/rambu/" +
+            jenisRambu +
+            posisi +
+            koordinat
+        );
+        const id_rambu = res.data.rambu[0].id_rambu;
+        const resGambar = await axios.post(
+          "http://localhost:5000/api/v1/todo/rambu/gambar/" + id_rambu,
+          formData
+        );
+        await axios.post(
+          "http://localhost:5000/api/v1/todo/rambu/gambar/status/" +
+            resGambar.data.id_gambarRambu,
+          {
+            status,
+          }
+        );
 
-      navigate("/dashboard/admin/detail/rambu/" + id_rambu);
+        navigate("/dashboard/admin/detail/rambu/" + id_rambu);
+      }
     } catch (err) {
       const msg = err.response.data.msg;
       console.log({ err });
@@ -76,7 +86,7 @@ const UpdateRambu = () => {
   };
 
   const handelBatal = () => {
-    navigate("/dashboard/admin/detail/" + params.id);
+    navigate("/dashboard/admin/detail/rambu/" + params.id);
   };
 
   useEffect(() => {
@@ -147,24 +157,54 @@ const UpdateRambu = () => {
               idFor={"Koordinat"}
             />
             <div className="lg:flex mb-4">
-              <label
-                htmlFor="status"
-                className="font-semibold text-sm w-36 flex items-center mr-10 mb-2"
-              >
+              <p className="font-semibold text-sm w-36 flex items-center mb-2">
                 Status <span className="text-pink-600 ml-1">*</span>
-              </label>
-              <input
-                list="status"
-                placeholder="pilih status"
-                value={status}
-                className="border rounded-md w-full p-1 px-5"
-                onChange={(e) => setStatus(e.target.value)}
-              />
-              <datalist id="status">
-                <option value="direncanakan">direncanakan</option>
-                <option value="terpasang">terpasang</option>
-                <option value="dipelihara">dipelihara</option>
-              </datalist>
+              </p>
+              <div className="flex items-center mr-2">
+                <input
+                  type="radio"
+                  id="Direncanakan"
+                  name="fav_language"
+                  onClick={(e) => setStatus(e.target.value)}
+                  value="direncanakan"
+                />
+                <label
+                  htmlFor="Direncanakan"
+                  className="font-semibold text-sm ml-1"
+                >
+                  Direncanakan
+                </label>
+              </div>
+              <div className="flex items-center mr-2">
+                <input
+                  type="radio"
+                  id="Terpasang"
+                  name="fav_language"
+                  onClick={(e) => setStatus(e.target.value)}
+                  value="terpasang"
+                />
+                <label
+                  htmlFor="Terpasang"
+                  className="font-semibold text-sm ml-1"
+                >
+                  Terpasang
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="Dipelihara"
+                  name="fav_language"
+                  value="dipelihara"
+                  onClick={(e) => setStatus(e.target.value)}
+                />
+                <label
+                  htmlFor="Dipelihara"
+                  className="font-semibold text-sm ml-1"
+                >
+                  Dipelihara
+                </label>
+              </div>
             </div>
             <div className="lg:flex mb-4">
               <label

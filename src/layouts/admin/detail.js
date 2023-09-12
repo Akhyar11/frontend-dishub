@@ -83,10 +83,7 @@ const Detail = () => {
               return (
                 <Fragment key={i.id_jalan}>
                   <FieldDescripsi field="001" nama="No Ruas" dark={true} />
-                  <FieldDescripsi
-                    field={i.titik_pangkal + "-" + i.titik_ujung}
-                    nama="Jalan"
-                  />
+                  <FieldDescripsi field={i.jalan} nama="Jalan" />
                   <FieldDescripsi
                     field={i.titik_pangkal}
                     nama="Titik Pangkal"

@@ -7,6 +7,7 @@ import getToken from "../../utils/getToken";
 
 const UpdateJalan = () => {
   const [kecamatan, setKecamatan] = useState("");
+  const [jalan, setJalan] = useState("");
   const [tp, setTp] = useState("");
   const [tu, setTu] = useState("");
   const [MSG, setMsg] = useState(false);
@@ -21,6 +22,7 @@ const UpdateJalan = () => {
 
       const { ruasJalan } = response.data.data;
       setKecamatan(ruasJalan[0].kecamatan);
+      setJalan(ruasJalan[0].jalan);
       setTp(ruasJalan[0].titik_pangkal);
       setTu(ruasJalan[0].titik_ujung);
     } catch (err) {
@@ -74,6 +76,13 @@ const UpdateJalan = () => {
               change={(e) => setKecamatan(e.target.value)}
               idFor={"Kecamatan"}
               value={kecamatan}
+            />
+            <FormPengaduan
+              label="Nama Jalan"
+              placeholder="tulis nama jalan"
+              change={(e) => setJalan(e.target.value)}
+              idFor={"Jalan"}
+              value={jalan}
             />
             <FormPengaduan
               idFor={"titik_ujung"}
