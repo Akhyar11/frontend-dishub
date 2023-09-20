@@ -55,7 +55,11 @@ const UpdateJalan = () => {
   }, []);
   return (
     <>
-      <NavbarAdmin />
+      <NavbarAdmin
+        back={() => {
+          navigate("/dashboard/admin/detail/" + params.id);
+        }}
+      />
       <div className="p-8 pt-28 lg:mx-72">
         <div className="bg-white rounded-md border border-gray-300 mb-10">
           <div className="p-4 flex border-b items-center">

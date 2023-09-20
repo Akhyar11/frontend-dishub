@@ -10,6 +10,7 @@ import DetailRambu from "./detailRambu";
 import UpdateJalan from "./editJalan";
 import UpdateRambu from "./editRambu";
 import UpdateStatus from "./editStatus";
+import Riwayat from "./Riwayat";
 
 const Admin = () => {
   return (
@@ -17,6 +18,7 @@ const Admin = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard/admin" element={<DashboardAdmin />} />
+        <Route path="/dashboard/admin/riwayat" element={<Riwayat />} />
         <Route path="/dashboard/admin/add/jalan" element={<AddJalan />} />
         <Route
           path="/dashboard/admin/update/jalan/:id"

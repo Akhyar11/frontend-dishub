@@ -1,56 +1,33 @@
+import { useNavigate } from "react-router-dom";
 import logoDishub from "../../assets/Departemen_Perhubungan.png";
 import logoBoyolali from "../../assets/Kabupaten_Boyolali.png";
 import { MdMenu } from "react-icons/md";
 
-export default function NavbarAdmin() {
+export default function NavbarAdmin({ back }) {
+  const navigate = useNavigate();
   const navigation = [
     {
-      name: "Dashboard",
+      name: "Kembali",
       href: "#",
-      current: true,
+      func: back,
+      current:
+        "bg-green-400 text-white font-semibold rounded-md py-2 px-3 hover:bg-green-100 transition-all w-full mb-2",
     },
     {
-      name: "Team",
+      name: "Rumah",
       href: "#",
-      current: false,
+      func: () => navigate("/dashboard/admin"),
+      current:
+        "bg-red-400 text-white font-semibold rounded-md py-2 px-3 hover:bg-red-100 transition-all w-full mb-2",
     },
     {
-      name: "Projects",
+      name: "Riwayat",
       href: "#",
-      current: false,
-    },
-    {
-      name: "Reports",
-      href: "#",
-      current: false,
+      func: () => navigate("/dashboard/admin/riwayat"),
+      current:
+        "bg-yellow-400 text-white font-semibold rounded-md py-2 px-3 hover:bg-yellow-100 transition-all w-full mb-2",
     },
   ];
-
-  const Active = (e) => {
-    const target = e.target.innerHTML;
-    const element = [
-      document.getElementById("Dashboard"),
-      document.getElementById("Team"),
-      document.getElementById("Projects"),
-      document.getElementById("Reports"),
-    ];
-
-    for (let i = 0; i < navigation.length; i++) {
-      if (target === navigation[i].name) navigation[i].current = true;
-      if (target !== navigation[i].name) navigation[i].current = false;
-      if (navigation[i].current) {
-        element[i].classList.remove("hover:bg-sky-100");
-        element[i].classList.add("bg-sky-400");
-        element[i].classList.add("text-white");
-        element[i].classList.add("font-semibold");
-      } else {
-        element[i].classList.add("hover:bg-sky-100");
-        element[i].classList.remove("bg-sky-400");
-        element[i].classList.remove("text-white");
-        element[i].classList.remove("font-semibold");
-      }
-    }
-  };
 
   const handelMenu = () => {
     const dropdown = document.getElementById("dropdown");
@@ -80,12 +57,8 @@ export default function NavbarAdmin() {
                   <button
                     key={i.name}
                     id={i.name}
-                    className={
-                      i.current
-                        ? "bg-sky-400 text-white font-semibold rounded-md py-2 px-3 hover:bg-sky-100 transition-all hidden lg:block"
-                        : "rounded-md py-2 px-3 hover:bg-sky-100 transition-all"
-                    }
-                    onClick={Active}
+                    className={i.current + "cursor-pointer"}
+                    onClick={i.func}
                   >
                     {i.name}
                   </button>
@@ -109,12 +82,8 @@ export default function NavbarAdmin() {
                   <button
                     key={i.name}
                     id={i.name}
-                    className={
-                      i.current
-                        ? "bg-sky-400 text-white font-semibold rounded-md py-2 px-3 hover:bg-sky-100 transition-all w-full mb-2"
-                        : "rounded-md py-2 px-3 hover:bg-sky-100 transition-all w-full mb-2"
-                    }
-                    onClick={Active}
+                    className={i.current + "cursor-pointer"}
+                    onClick={i.func}
                   >
                     {i.name}
                   </button>

@@ -166,7 +166,7 @@ const List = () => {
         <thead>
           <tr className="font-semibold border-b">
             <th className="pb-2">No Ruas</th>
-            <th className="text-left pb-2">Nama Ruas jalan</th>
+            <th className="text-left pb-2">Nama Jalan</th>
             <th className="pb-2">Total Rambu</th>
             <th className="pb-2">
               Aksi
@@ -187,7 +187,7 @@ const List = () => {
                   key={count}
                   idJalan={i.id_jalan}
                   nomer={count + 1}
-                  ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
+                  ruasJalan={i.jalan}
                   totalRambu={tr.length}
                   deleteJalan={delateJalan}
                 />
@@ -198,7 +198,7 @@ const List = () => {
                   key={count}
                   nomer={count + 1}
                   idJalan={i.id_jalan}
-                  ruasJalan={`${i.titik_pangkal}-${i.titik_ujung}`}
+                  ruasJalan={i.jalan}
                   totalRambu={tr.length}
                   dark={true}
                   deleteJalan={delateJalan}

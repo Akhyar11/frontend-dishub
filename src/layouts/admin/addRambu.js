@@ -67,7 +67,11 @@ const AddRambu = () => {
   };
   return (
     <>
-      <NavbarAdmin />
+      <NavbarAdmin
+        back={() => {
+          navigate("/dashboard/admin/detail/" + params.id);
+        }}
+      />
       <div className="p-8 pt-28 lg:mx-72">
         <div className="bg-white rounded-md border border-gray-300 mb-10">
           <div className="p-4 flex border-b items-center">
@@ -102,23 +106,45 @@ const AddRambu = () => {
               </datalist>
             </div>
             <div className="lg:flex mb-4">
-              <label
-                htmlFor="posisi"
-                className="font-semibold text-sm w-36 flex items-center mr-10 mb-2"
-              >
+              <p className="font-semibold text-sm w-36 flex items-center mb-2">
                 Posisi <span className="text-pink-600 ml-1">*</span>
-              </label>
-              <input
-                list="posisi"
-                placeholder="pilih jenis rambu"
-                className="border rounded-md w-full p-1 px-5"
-                onChange={(e) => setPosisi(e.target.value)}
-              />
-              <datalist id="posisi">
-                <option value="Kanan">Kanan</option>
-                <option value="Kiri">Kiri</option>
-                <option value="Tengah">Tengah</option>
-              </datalist>
+              </p>
+              <div className="flex items-center mr-2">
+                <input
+                  type="radio"
+                  id="Kanan"
+                  name="fav_language"
+                  onClick={(e) => setPosisi(e.target.value)}
+                  value="kanan"
+                />
+                <label htmlFor="Kanan" className="font-semibold text-sm ml-1">
+                  kanan
+                </label>
+              </div>
+              <div className="flex items-center mr-2">
+                <input
+                  type="radio"
+                  id="Tengah"
+                  name="fav_language"
+                  onClick={(e) => setPosisi(e.target.value)}
+                  value="tengah"
+                />
+                <label htmlFor="Tengah" className="font-semibold text-sm ml-1">
+                  Tengah
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="Kiri"
+                  name="fav_language"
+                  value="kiri"
+                  onClick={(e) => setPosisi(e.target.value)}
+                />
+                <label htmlFor="Kiri" className="font-semibold text-sm ml-1">
+                  Kiri
+                </label>
+              </div>
             </div>
             <FormPengaduan
               label="Koordinat"

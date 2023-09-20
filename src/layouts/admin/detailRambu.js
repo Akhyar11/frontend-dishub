@@ -40,8 +40,12 @@ const DetailRambu = () => {
   }, []);
   return (
     <>
-      <NavbarAdmin />
-      <div className="p-8 pt-28 lg:mx-72">
+      <NavbarAdmin
+        back={() =>
+          navigate("/dashboard/admin/detail/" + ruasJalan[0].id_jalan)
+        }
+      />
+      <div className="lg:mx-72 pt-28">
         <div className="bg-white rounded-md border border-gray-300 mb-10">
           <div className="p-4 flex border-b items-center">
             <MdOutlineBookmark className="mr-2" />
@@ -88,7 +92,9 @@ const DetailRambu = () => {
             })}
           </div>
         </div>
-        <Gambar gambar={status} />
+        {rambu.map((i) => {
+          return <Gambar gambar={status} status={i.status} />;
+        })}
       </div>
     </>
   );
